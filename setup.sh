@@ -1,39 +1,44 @@
 #!/bin/bash
 # Most of this script is supplied by Michael Bazzel, so credit where credit is due.
 
+# Show desktop
+gnome-extensions enable desktop-icons@csoriano
+
+# Google
+gpg --keyserver keyserver.ubuntu.com --recv 4EB27DB2A3B88B8B  
+gpg --export --armor 4EB27DB2A3B88B8B | sudo apt-key add -
+
 sudo apt-get -y update
-sudo apt-get -y update
+sudo apt-get -y upgrade
 
 # Requirements for installing tools
 
-requirements = ("python3"
-                "python-setuptools"
-                "jq"                    
-                "python3-pip"
-                "python-pip"
-                "git"
-                "xargs"
-                "curl"
-                "wget")
+requirements=("python3" "python-setuptools" "jq" "python3-pip" "git" "findutils" "curl" "wget" "unzip")
 
-for requirements in $requirements; do
-    echo "Installing $(requirements)..."
-    sudo apt-get install -y $(requirements)
+echo "Installing ..."
+for requirement in "${requirements[@]}"; do
+    sudo apt-get install -y $requirement
 done
 
 #ToDo: Move user.js file to proper directory ~/.mozilla/ http://kb.mozillazine.org/Profile_folder
 
+echo
+echo "Download manually (redirected to Proton): https://inteltechniques.com/osintbook/vm-files.zip to ~/Desktop"
+echo "Press key... (Ctrl-c to exit)"
+echo
+read -n 1 -s
+
 #Install scripts and launchers
-cd ~/Desktop && curl -O https://inteltechniques.com/osintbook/vm-files.zip
+cd ~/Desktop
 unzip vm-files.zip -d /home/osint/Desktop/
 mkdir ~/Documents/scripts
 mkdir ~/Documents/icons
 cd ~/Desktop/vm-files/scripts
-sudo cp * ~/Documents/scripts
+sudo cp -r * ~/Documents/scripts
 cd ~/Desktop/vm-files/icons
-cp * ~/Documents/icons
+cp -r * ~/Documents/icons
 cd ~/Desktop/vm-files/shortcuts
-sudo cp * /usr/share/applications/
+sudo cp -r * /usr/share/applications/
 cd ~/Downloads
 mkdir Programs
 cd Programs
@@ -139,61 +144,5 @@ git clone https://github.com/AmIJesse/Elasticsearch-Crawler.git
 cd Elasticsearch-Crawler
 sudo -H pip3 install nested-lookup
 sudo -H pip3 install internetarchive
-cd ~/Downloads/Programs                                    
-                                    
-sudo chmod +x udate_osint_tools.sh                                   
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ToDo: VMware tools installation
